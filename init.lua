@@ -42,7 +42,7 @@ local function fetch_lift(pos, node, clicker, rel, i, open_door, plus)
 			
 			local test = minetest.find_nodes_in_area({x=pos.x-2, y=pos.y+i, z=pos.z-2}, {x=pos.x+2, y=pos.y+i, z=pos.z+2}, "air")
 			if #test == 9 then
-				print("lift not found, too much air")
+				minetest.chat_send_player(name, "lift not found, too much air")
 				return
 			end
 			
