@@ -28,7 +28,10 @@ local function fetch_lift(pos, node, clicker, rel, i, open_door, plus)
 	local snode = get_far_node({x=pos.x-1, y=pos.y+i, z=pos.z})
 	local anode = get_far_node({x=pos.x, y=pos.y+i, z=pos.z+1})
 	local dnode = get_far_node({x=pos.x, y=pos.y+i, z=pos.z-1})
-	
+	local name = clicker:get_player_name()
+	if not name then
+	   return
+	end
 	if wnode.name ~= "lifter:lift" and snode.name ~= "lifter:lift" and 
 		anode.name ~= "lifter:lift" and dnode.name ~= "lifter:lift" then
 		
@@ -36,13 +39,13 @@ local function fetch_lift(pos, node, clicker, rel, i, open_door, plus)
 			   anode.name ~= "air" and dnode.name ~= "air" and
 			   wnode.name ~= "bones:bones" and snode.name ~= "bones:bones" and 
 			anode.name ~= "bones:bones" and dnode.name ~= "bones:bones"then
-				print("lift not found, no air")
+				minetest.chat_send_player(name, "lift not found, no air")
 				return
 			end
 			
 			local test = minetest.find_nodes_in_area({x=pos.x-2, y=pos.y+i, z=pos.z-2}, {x=pos.x+2, y=pos.y+i, z=pos.z+2}, "air")
 			if #test == 16 then
-				print("lift not found, too much air")
+				minetest.chat_send_player(name, "lift not found, too much air")
 				return
 			end
 			
@@ -58,7 +61,7 @@ local function fetch_lift(pos, node, clicker, rel, i, open_door, plus)
 				minetest.remove_node({x=pos.x+1, y=pos.y+i, z=pos.z})
 				minetest.add_node({x=pos.x+1, y=pos.y+rel, z=pos.z}, {name="lifter:lift"})
 			else
-				print("lift blocked")
+				minetest.chat_send_player(name, "lift blocked")
 			end
 		end
 		if snode.name == "lifter:lift" then
@@ -67,7 +70,7 @@ local function fetch_lift(pos, node, clicker, rel, i, open_door, plus)
 				minetest.remove_node({x=pos.x-1, y=pos.y+i, z=pos.z})
 				minetest.add_node({x=pos.x-1, y=pos.y+rel, z=pos.z}, {name="lifter:lift"})
 			else
-				print("lift blocked")
+				minetest.chat_send_player(name, "lift blocked")
 			end
 		end
 		if anode.name == "lifter:lift" then
@@ -76,7 +79,7 @@ local function fetch_lift(pos, node, clicker, rel, i, open_door, plus)
 				minetest.remove_node({x=pos.x, y=pos.y+i, z=pos.z+1})
 				minetest.add_node({x=pos.x, y=pos.y+rel, z=pos.z+1}, {name="lifter:lift"})
 			else
-				print("lift blocked")
+				minetest.chat_send_player(name, "lift blocked")
 			end
 		end
 		if dnode.name == "lifter:lift" then
@@ -85,7 +88,7 @@ local function fetch_lift(pos, node, clicker, rel, i, open_door, plus)
 				minetest.remove_node({x=pos.x, y=pos.y+i, z=pos.z-1})
 				minetest.add_node({x=pos.x, y=pos.y+rel, z=pos.z-1}, {name="lifter:lift"})
 			else
-				print("lift blocked")
+				minetest.chat_send_player(name, "lift blocked")
 			end
 		end
 		open_door(pos,node,clicker)
